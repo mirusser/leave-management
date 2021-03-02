@@ -17,6 +17,11 @@ namespace leave_management.Repository
             this.db = db;
         }
 
+        public bool CheckIfExistsById(int id)
+        {
+            return db.LeaveHistories.Any(x => x.Id == id);
+        }
+
         public bool Create(LeaveHistory entity)
         {
             db.LeaveHistories.Add(entity);

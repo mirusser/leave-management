@@ -18,6 +18,11 @@ namespace leave_management.Repository
             this.db = db;
         }
 
+        public bool CheckIfExistsById(int id)
+        {
+            return db.LeaveAllocations.Any(x => x.Id == id);
+        }
+
         public bool Create(LeaveAllocation entity)
         {
             db.LeaveAllocations.Add(entity);

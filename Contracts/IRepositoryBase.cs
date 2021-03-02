@@ -9,6 +9,7 @@ namespace leave_management.Contracts
     {
         IQueryable<T> FindAll();
         T FindById(int id);
+        bool CheckIfExistsById(int id);
         bool Create(T entity);
         bool Update(T entity);
         bool Delete(T entity);
