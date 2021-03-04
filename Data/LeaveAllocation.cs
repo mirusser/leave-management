@@ -11,14 +11,23 @@ namespace leave_management.Data
     {
         [Key]
         public int Id { get; set; }
+
+        [Range(0, int.MaxValue)]
         public int NumberOfDays { get; set; }
+
         public DateTime DateCreated { get; set; }
+
         [ForeignKey(nameof(EmployeeId))]
         public Employee Employee { get; set; }
+
         public string EmployeeId { get; set; }
+
         [ForeignKey(nameof(LeaveTypeId))]
-        public LeaveType LeaveType { get; set; }
+        public virtual LeaveType LeaveType { get; set; }
+
         public int LeaveTypeId { get; set; }
 
+        [Range(0, int.MaxValue)]
+        public int Period { get; set; }
     }
 }

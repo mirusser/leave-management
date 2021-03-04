@@ -1,0 +1,76 @@
+﻿@using leave_management.Extensions
+@using leave_management.Controllers
+
+@model leave_management.Models.ViewAllocationsVM
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>
+    Details for - @Model.EmployeeVM.Email
+</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeVM.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeVM.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeVM.Email)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Html.DisplayFor(model => model.EmployeeVM.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.EmployeeVM.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.EmployeeVM.Email)
+            </td>
+            <td>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<hr />
+
+<div class="card" style="width: 18rem;">
+    <div class="card-header">
+        Leave allocations
+    </div>
+    <ul class="list-group list-group-flush">
+        @foreach (var item in Model.LeaveAllocationVMs)
+        {
+            <li class="list-group-item">
+                <h6>
+                    @(item.LeaveType.Name)
+                    <span class="badge badge-secondary">
+                        @(item.NumberOfDays)
+                    </span>
+                    <a asp-route-leaveAllocationId="@item.Id" asp-action="@(nameof(LeaveAllocationController.Edit))" asp-controller="@(MvcHelper.NameOfController<LeaveAllocationController>())" class="btn btn-warning">
+                        <i class="fa fa-pencil"></i>
+                        Edit
+                    </a>
+                </h6>
+            </li>
+        }
+    </ul>
+</div>
+
+<div>
+    <a asp-controller="@(MvcHelper.NameOfController<LeaveAllocationController>())" asp-action="@(nameof(LeaveAllocationController.ListOfEmployees))">
+        Back to list
+    </a>
+</div>

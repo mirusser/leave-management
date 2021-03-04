@@ -1,9 +1,10 @@
 ﻿@using leave_management.Extensions
 @using leave_management.Controllers
-
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@using leave_management.Data
+
+@inject SignInManager<Employee> SignInManager
+@inject UserManager<Employee> UserManager
 
 <!DOCTYPE html>
 <html lang="en">
@@ -43,11 +44,27 @@
                                     Manage
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item text-dark" asp-area="" asp-controller="@(MvcHelper.NameOfController<LeaveTypesController>())" asp-action="@(nameof(LeaveTypesController.Index))">Leave Types</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">Leave Allocations</a></li>
-                                    <li><a class="dropdown-item text-dark" href="#">Leave Applications</a></li>
+                                    <li>
+                                        <a class="dropdown-item text-dark" asp-area="" asp-controller="@(MvcHelper.NameOfController<LeaveTypesController>())" asp-action="@(nameof(LeaveTypesController.Index))">
+                                            Leave Types
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-dark" asp-area="" asp-controller="@(MvcHelper.NameOfController<LeaveAllocationController>())" asp-action="@(nameof(LeaveTypesController.Index))">
+                                            Leave Allocations
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-dark" href="#">
+                                            Leave Applications
+                                        </a>
+                                    </li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item text-dark" href="#">Employees</a></li>
+                                    <li>
+                                        <a class="dropdown-item text-dark" asp-area="" asp-controller="@(MvcHelper.NameOfController<LeaveAllocationController>())" asp-action="@(nameof(LeaveAllocationController.ListOfEmployees))">
+                                            Employees
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         }

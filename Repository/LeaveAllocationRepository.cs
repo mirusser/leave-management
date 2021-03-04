@@ -37,12 +37,15 @@ namespace leave_management.Repository
 
         public IQueryable<LeaveAllocation> FindAll()
         {
-            return db.LeaveAllocations;
+            return db.LeaveAllocations.Include(x => x.Employee).Include(x => x.LeaveType);
         }
+
+        public IQueryable<LeaveAllocation> GetLeaveAllocationsByEmployeeId(string employeeId)
+            => db.LeaveAllocations.Where(x => x.EmployeeId == employeeId && x.Period == DateTime.Now.Year).Include(x => x.LeaveType).Include(x => x.Employee);
 
         public LeaveAllocation FindById(int id)
         {
-            return db.LeaveAllocations.FirstOrDefault(x => x.Id == id);
+            return db.LeaveAllocations.Include(x => x.Employee).Include(x => x.LeaveType).FirstOrDefault(x => x.Id == id);
         }
 
         public bool Save()
@@ -55,5 +58,8 @@ namespace leave_management.Repository
             db.LeaveAllocations.Update(entity);
             return Save();
         }
+
+        public bool CheackIfAllocationExistsForEmployee(int leaveTypeId, string employeeId)
+            => db.LeaveAllocations.Any(x => x.EmployeeId == employeeId && x.LeaveTypeId == leaveTypeId && x.Period == DateTime.Now.Year);
     }
 }
