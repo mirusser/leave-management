@@ -1,0 +1,71 @@
+﻿@using leave_management.Extensions
+@using leave_management.Controllers
+
+@model leave_management.Models.CreateLeaveRequestVM
+
+@{
+    ViewData["Title"] = "Create leave request";
+}
+
+<h1>
+    Create leave request
+</h1>
+
+<hr />
+
+<div class="row">
+    <div class="offset-md-2 col-md-8">
+        <form asp-controller="@(MvcHelper.NameOfController<LeaveRequestController>())" asp-action="@(nameof(LeaveRequestController.Create))">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="LeaveTypeId" class="control-label"></label>
+                <select asp-items="@Model.LeaveTypes" asp-for="LeaveTypeId" class="form-control"></select>
+                <span asp-validation-for="LeaveTypeId" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="StartDate" class="control-label"></label>
+                        <input id="startDateDatePicker" asp-for="StartDate" class="form-control" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="EndDate" class="control-label"></label>
+                        <input id="endDateDatePicker" asp-for="EndDate" class="form-control" />
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Request leave" class="btn btn-primary btn-block" />
+            </div>
+        </form>
+
+        <div class="form-group">
+            <a asp-controller="@(MvcHelper.NameOfController<LeaveRequestController>())" asp-action="@(nameof(LeaveRequestController.Index))" class="btn btn-outline-secondary btn-block">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                Back to requests list
+            </a>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script>
+        $(function () {
+            $("#startDateDatePicker").datepicker({ dateFormat: 'dd/mm/yy' });
+            $("#endDateDatePicker").datepicker({ dateFormat: 'dd/mm/yy' });
+        });
+    </script>
+}

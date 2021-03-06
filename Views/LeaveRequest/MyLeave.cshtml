@@ -1,0 +1,113 @@
+﻿@using leave_management.Controllers
+
+@model leave_management.Models.EmployeeLeaveRequestViewVM
+
+@{
+    ViewData["Title"] = "My Leave";
+}
+
+<h1>
+    My leave Allocations
+</h1>
+
+<div class="jumbotron">
+    <div class="card">
+        <ul class="list-group list-group-flush">
+            @foreach (var item in Model.LeaveAllocationVMs)
+            {
+                <li class="list-group-item">
+                    <h6>
+                        @(item.LeaveType.Name)
+                        <span class="badge badge-secondary">
+                            @(item.NumberOfDays)
+                        </span>
+                    </h6>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<hr />
+
+<h1>
+    My leave Requests
+</h1>
+
+<table id="leaveRequestsTable" class="table">
+    <thead>
+        <tr>
+            <th>
+                Leave type
+            </th>
+            <th>
+                Start date
+            </th>
+            <th>
+                End date
+            </th>
+            <th>
+                Date requested
+            </th>
+            <th>
+                Approval State
+            </th>
+            <th>
+                Cancel Request
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.LeaveRequestVMs)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LeaveType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StarDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateRequested)
+                </td>
+                <td>
+                    @if (item.Approved == true)
+                    {
+                        <span class="badge badge-success">Approved</span>
+                    }
+                    else if (item.Approved == false)
+                    {
+                        <span class="badge badge-danger">Rejected</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-warning">Pending</span>
+                    }
+                </td>
+                <td>
+                    @if (item.StarDate > DateTime.Now)
+                    {
+                        <a asp-action="@(nameof(LeaveRequestController.CancelRequest))" 
+                           asp-route-leaveRequestId="@item.Id"
+                           class="btn btn-danger"
+                           onclick="return confirm('Are you sure you want to cancel leave request')">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#leaveRequestsTable').DataTable();
+        });
+    </script>
+}

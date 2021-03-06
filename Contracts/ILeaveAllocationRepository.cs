@@ -10,5 +10,6 @@ namespace leave_management.Contracts
     {
         bool CheackIfAllocationExistsForEmployee(int leaveTypeId, string employeeId);
         IQueryable<LeaveAllocation> GetLeaveAllocationsByEmployeeId(string employeeId);
+        LeaveAllocation GetLeaveAllocationByEmployeeIdAndLeaveTypeId(string employeeId, int leaveTypeId);
     }
 }

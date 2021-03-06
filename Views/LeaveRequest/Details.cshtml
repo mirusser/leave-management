@@ -1,0 +1,119 @@
+﻿@using leave_management.Extensions
+@using leave_management.Controllers
+
+@model leave_management.Models.LeaveRequestVM
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>
+    Review of @Model.RequestingEmployee.Email leave request
+</h1>
+
+<div class="row">
+
+    <div class="col-md-12">
+
+        @if (Model.Approved == true)
+        {
+            <div class="alert alert-success text-center" role="alert">
+                <h4 class="alert-heading">
+                    Approved
+                </h4>
+
+                This leave request was approved by @(Model.ApprovedBy.Email) date: @(Model.DateActioned)
+            </div>
+        }
+        else if (Model.Approved == false)
+        {
+            <div class="alert alert-danger text-center" role="alert">
+                <h4 class="alert-heading">
+                    Rejected
+                </h4>
+                This leave request was rejected by @(Model.ApprovedBy.Email) date: @(Model.DateActioned)
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-success text-center" role="alert">
+                <h4 class="alert-heading">
+                    Pending
+                </h4>
+                This leave request is pending
+            </div>
+        }
+    </div>
+</div>
+
+<h4>
+    @Html.DisplayNameFor(model => model.DateRequested) - @Html.DisplayFor(model => model.DateRequested)
+</h4>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RequestingEmployee)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RequestingEmployee.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StarDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StarDate.Date)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EndDate.Date)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LeaveType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LeaveType.Name)
+        </dd>
+    </dl>
+</div>
+
+@if (Model.Approved is null)
+{
+    <div class="row">
+        <div class="col-md-6">
+            <a asp-controller="@(MvcHelper.NameOfController<LeaveRequestController>())"
+               asp-action="@(nameof(LeaveRequestController.ApproveLeaveRequest))"
+               asp-route-leaveRequestId="@Model.Id"
+               asp-route-approveRequest="@true"
+               class="btn btn-success btn-block">
+                <i class="fa fa-check"></i>
+                Approve
+            </a>
+        </div>
+
+        <div class="col-md-6">
+            <a asp-controller="@(MvcHelper.NameOfController<LeaveRequestController>())"
+               asp-action="@(nameof(LeaveRequestController.ApproveLeaveRequest))"
+               asp-route-leaveRequestId="@Model.Id"
+               asp-route-approveRequest="@false"
+               class="btn btn-danger btn-block">
+                <i class="fa fa-remove"></i>
+                Reject
+            </a>
+        </div>
+    </div>
+
+    <br />
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <a asp-action="Index" class="btn btn-outline-secondary btn-block">
+            <i class="fa fa-arrow-left"></i>
+            Back to List
+        </a>
+    </div>
+</div>

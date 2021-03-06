@@ -43,6 +43,9 @@ namespace leave_management.Repository
         public IQueryable<LeaveAllocation> GetLeaveAllocationsByEmployeeId(string employeeId)
             => db.LeaveAllocations.Where(x => x.EmployeeId == employeeId && x.Period == DateTime.Now.Year).Include(x => x.LeaveType).Include(x => x.Employee);
 
+        public LeaveAllocation GetLeaveAllocationByEmployeeIdAndLeaveTypeId(string employeeId, int leaveTypeId)
+            => db.LeaveAllocations.Include(x => x.LeaveType).Include(x => x.Employee).FirstOrDefault(x => x.EmployeeId == employeeId && x.Period == DateTime.Now.Year && x.LeaveTypeId == leaveTypeId);
+
         public LeaveAllocation FindById(int id)
         {
             return db.LeaveAllocations.Include(x => x.Employee).Include(x => x.LeaveType).FirstOrDefault(x => x.Id == id);

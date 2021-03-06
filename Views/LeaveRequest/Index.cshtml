@@ -1,0 +1,173 @@
+﻿@model leave_management.Models.AdminLeaveRequestViewVM
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>
+    Leave requests
+</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        Create leave request
+    </a>
+</p>
+
+<div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body text-center">
+                <h5 class="card-title">
+                    @Html.DisplayNameFor(model => model.TotalNumberOfRequests)
+                </h5>
+
+                <div class="alert alert-info" role="alert">
+                    <h1 class="card-text">
+                        @Html.DisplayFor(model => model.TotalNumberOfRequests)
+                    </h1>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body text-center">
+                <h5 class="card-title">
+                    @Html.DisplayNameFor(model => model.TotalNumberOfPendingRequests)
+                </h5>
+                <div class="alert alert-warning" role="alert">
+                    <h1 class="card-text">
+                        @Html.DisplayFor(model => model.TotalNumberOfPendingRequests)
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body text-center">
+                <h5 class="card-title">
+                    @Html.DisplayNameFor(model => model.TotalNumberOfApprovedRequests)
+                </h5>
+                <div class="alert alert-success" role="alert">
+                    <h1 class="card-text">
+                        @Html.DisplayFor(model => model.TotalNumberOfApprovedRequests)
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body text-center">
+
+                <h5 class="card-title">
+                    @Html.DisplayNameFor(model => model.TotalNumberOfRejectedRequests)
+                </h5>
+
+                <div class="alert alert-danger" role="alert">
+                    <h1 class="card-text">
+                        @Html.DisplayFor(model => model.TotalNumberOfRejectedRequests)
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<h1>
+    Leave request log
+</h1>
+
+<hr />
+
+<table id="leaveRequestsTable" class="table">
+    <thead>
+        <tr>
+            <th>
+                Employee email
+            </th>
+            <th>
+                Star Date
+            </th>
+            <th>
+                End Date
+            </th>
+            <th>
+                Leave Type
+            </th>
+            <th>
+                Date Requested
+            </th>
+            <th>
+                Approval status
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.LeaveRequestVMs)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => (item.RequestingEmployee.Email))
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StarDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LeaveType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateRequested)
+                </td>
+                <td>
+                    @if (item.Approved == true)
+                    {
+                        <span class="badge badge-success">
+                            Approved
+                        </span>
+                    }
+                    else if (item.Approved == false)
+                    {
+                        <span class="badge badge-danger">
+                            Rejected
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-warning">
+                            Pending
+                        </span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">
+                        <i class="fa fa-file"></i>
+                        Review
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#leaveRequestsTable').DataTable();
+        });
+    </script>
+}
