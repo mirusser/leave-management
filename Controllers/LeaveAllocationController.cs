@@ -37,8 +37,8 @@ namespace leave_management.Controllers
         // GET: LeaveAllocationController
         public async Task<IActionResult> Index(int numberUpdated = default)
         {
-            var leaveTypes = await leaveTypeRepository.FindAll()?.ToListAsync();
-            var listOfLeaveTypeVM = mapper.Map<List<LeaveType>, List<LeaveTypeVM>>(leaveTypes);
+            var leaveTypes = await leaveTypeRepository.FindAll();
+            var listOfLeaveTypeVM = mapper.Map<List<LeaveType>, List<LeaveTypeVM>>(await leaveTypes.ToListAsync());
             var createLeaveAllocationVM = new CreateLeaveAllocationVM
             {
                 LeaveTypes = listOfLeaveTypeVM,
@@ -50,13 +50,13 @@ namespace leave_management.Controllers
 
         public async Task<IActionResult> SetLeave(int leaveTypeId)
         {
-            var leaveType = leaveTypeRepository.FindById(leaveTypeId);
+            var leaveType = await leaveTypeRepository.FindById(leaveTypeId);
             var employees = userManager.GetUsersInRoleAsync("employee").Result;
             var numberUpdated = default(int);
 
             foreach (var employee in employees)
             {
-                if (!leaveAllocationRepository.CheackIfAllocationExistsForEmployee(leaveTypeId, employee.Id))
+                if (! await leaveAllocationRepository.CheackIfAllocationExistsForEmployee(leaveTypeId, employee.Id))
                 {
                     var allocation = new LeaveAllocationVM
                     {
@@ -68,7 +68,7 @@ namespace leave_management.Controllers
                     };
 
                     var leaveAllocation = mapper.Map<LeaveAllocation>(allocation);
-                    leaveAllocationRepository.Create(leaveAllocation);
+                    await leaveAllocationRepository.Create(leaveAllocation);
                     numberUpdated++;
                 }
             }
@@ -78,7 +78,7 @@ namespace leave_management.Controllers
 
         public async Task<IActionResult> ListOfEmployees()
         {
-            var employees = userManager.GetUsersInRoleAsync("employee").Result;
+            var employees = await userManager.GetUsersInRoleAsync("employee");
             var listOfEmployeesVM = mapper.Map<List<EmployeeVM>>(employees);
 
             return View(listOfEmployeesVM);
@@ -88,7 +88,7 @@ namespace leave_management.Controllers
         public async Task<IActionResult> Details(string employeeId)
         {
             var employeeVM = mapper.Map<EmployeeVM>(await userManager.FindByIdAsync(employeeId));
-            var leaveAllocations = mapper.Map<List<LeaveAllocationVM>>(leaveAllocationRepository.GetLeaveAllocationsByEmployeeId(employeeId).ToList());
+            var leaveAllocations = mapper.Map<List<LeaveAllocationVM>>((await leaveAllocationRepository.GetLeaveAllocationsByEmployeeId(employeeId)).ToListAsync());
             var viewAllocationsVM = new ViewAllocationsVM
             {
                 EmployeeVM = employeeVM,
@@ -121,9 +121,9 @@ namespace leave_management.Controllers
         }
 
         // GET: LeaveAllocationController/Edit/5
-        public ActionResult Edit(int leaveAllocationId)
+        public async Task<IActionResult> Edit(int leaveAllocationId)
         {
-            var leaveAllocation = leaveAllocationRepository.FindById(leaveAllocationId);
+            var leaveAllocation = await leaveAllocationRepository .FindById(leaveAllocationId);
             var editLeaveAllocationVM = mapper.Map<EditLeaveAllocationVM>(leaveAllocation);
 
             return View(editLeaveAllocationVM);
@@ -132,14 +132,14 @@ namespace leave_management.Controllers
         // POST: LeaveAllocationController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(EditLeaveAllocationVM editLeaveAllocationVM)
+        public async Task<IActionResult> Edit(EditLeaveAllocationVM editLeaveAllocationVM)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     var leaveAllocation = mapper.Map<LeaveAllocation>(editLeaveAllocationVM);
-                    var isSuccess = leaveAllocationRepository.Update(leaveAllocation);
+                    var isSuccess = await leaveAllocationRepository .Update(leaveAllocation);
 
                     if (!isSuccess)
                     {

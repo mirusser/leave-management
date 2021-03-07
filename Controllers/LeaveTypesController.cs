@@ -28,21 +28,21 @@ namespace leave_management.Controllers
         // GET: LeaveTypesController
         public async Task<IActionResult> Index()
         {
-            var leaveTypes = await leaveTypeRepository.FindAll()?.ToListAsync();
+            var leaveTypes = await (await leaveTypeRepository.FindAll())?.ToListAsync();
             var listOfDetailsLeaveTypeVM = mapper.Map<List<LeaveType>, List<LeaveTypeVM>>(leaveTypes);
 
             return View(listOfDetailsLeaveTypeVM);
         }
 
         // GET: LeaveTypesController/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == default || !leaveTypeRepository.CheckIfExistsById(id))
+            if (id == default || ! await leaveTypeRepository.CheckIfExistsById(id))
             {
                 return NotFound();
             }
 
-            var leaveType = leaveTypeRepository.FindById(id);
+            var leaveType = await leaveTypeRepository .FindById(id);
             var leaveTypeVM = mapper.Map<LeaveTypeVM>(leaveType);
 
             return View(leaveTypeVM);
@@ -57,7 +57,7 @@ namespace leave_management.Controllers
         // POST: LeaveTypesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(LeaveTypeVM leaveTypeVM)
+        public async Task<IActionResult> Create(LeaveTypeVM leaveTypeVM)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace leave_management.Controllers
 
                 var leaveType = mapper.Map<LeaveType>(leaveTypeVM);
                 leaveType.DateCreated = DateTime.Now;
-                var creationResultIsSuccess = leaveTypeRepository.Create(leaveType);
+                var creationResultIsSuccess = await leaveTypeRepository .Create(leaveType);
 
                 if (!creationResultIsSuccess)
                 {
@@ -85,14 +85,14 @@ namespace leave_management.Controllers
         }
 
         // GET: LeaveTypesController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == default || !leaveTypeRepository.CheckIfExistsById(id))
+            if (id == default || ! await leaveTypeRepository.CheckIfExistsById(id))
             {
                 return NotFound();
             }
 
-            var leaveType = leaveTypeRepository.FindById(id);
+            var leaveType = await leaveTypeRepository .FindById(id);
             var leaveTypeVM = mapper.Map<LeaveTypeVM>(leaveType);
 
             return View(leaveTypeVM);
@@ -101,7 +101,7 @@ namespace leave_management.Controllers
         // POST: LeaveTypesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(LeaveTypeVM leaveTypeVM)
+        public async Task<IActionResult> Edit(LeaveTypeVM leaveTypeVM)
         {
             try
             {
@@ -111,7 +111,7 @@ namespace leave_management.Controllers
                 }
 
                 var leaveType = mapper.Map<LeaveType>(leaveTypeVM);
-                var editResultIsSuccess = leaveTypeRepository.Update(leaveType);
+                var editResultIsSuccess = await leaveTypeRepository.Update(leaveType);
 
                 if (!editResultIsSuccess)
                 {
@@ -128,16 +128,16 @@ namespace leave_management.Controllers
         }
 
         // GET: LeaveTypesController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == default || !leaveTypeRepository.CheckIfExistsById(id))
+            if (id == default || !await leaveTypeRepository .CheckIfExistsById(id))
             {
                 return NotFound();
             }
 
-            var leaveType = leaveTypeRepository.FindById(id);
+            var leaveType = await leaveTypeRepository .FindById(id);
 
-            var isDeletionSuccess = leaveTypeRepository.Delete(leaveType);
+            var isDeletionSuccess = await leaveTypeRepository .Delete(leaveType);
 
             if (!isDeletionSuccess)
             {
@@ -150,17 +150,17 @@ namespace leave_management.Controllers
         // POST: LeaveTypesController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, LeaveTypeVM leaveTypeVM)
+        public async Task<IActionResult> Delete(int id, LeaveTypeVM leaveTypeVM)
         {
             try
             {
-                if (id == default || !leaveTypeRepository.CheckIfExistsById(id))
+                if (id == default || ! await leaveTypeRepository.CheckIfExistsById(id))
                 {
                     return NotFound();
                 }
 
-                var leaveType = leaveTypeRepository.FindById(id);
-                var isDeletionSuccess = leaveTypeRepository.Delete(leaveType);
+                var leaveType = await leaveTypeRepository .FindById(id);
+                var isDeletionSuccess = await leaveTypeRepository .Delete(leaveType);
 
                 if (!isDeletionSuccess)
                 {

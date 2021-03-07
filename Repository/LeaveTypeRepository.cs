@@ -17,47 +17,41 @@ namespace leave_management.Repository
             this.db = db;
         }
 
-        public bool CheckIfExistsById(int id)
+        public async Task<bool> CheckIfExistsById(int id)
+            => await db.LeaveTypes.AnyAsync(x => x.Id == id);
+
+        public async Task<bool> Create(LeaveType entity)
         {
-            return db.LeaveTypes.Any(x => x.Id == id);
+            await db.LeaveTypes.AddAsync(entity);
+            return await Save();
         }
 
-        public bool Create(LeaveType entity)
-        {
-            db.LeaveTypes.Add(entity);
-            return Save();
-        }
-
-        public bool Delete(LeaveType entity)
+        public async Task<bool> Delete(LeaveType entity)
         {
             db.LeaveTypes.Remove(entity);
-            return Save();
+            return await Save();
         }
 
-        public IQueryable<LeaveType> FindAll()
+        public async Task<IQueryable<LeaveType>> FindAll()
         {
             return db.LeaveTypes;
         }
 
-        public LeaveType FindById(int id)
-        {
-            return db.LeaveTypes.FirstOrDefault(x => x.Id == id);
-        }
+        public async Task<LeaveType> FindById(int id)
+            => await db.LeaveTypes.FirstOrDefaultAsync(x => x.Id == id);
 
-        public IQueryable<LeaveType> GetEmployeesByLeaveType(int id)
+        public async Task<IQueryable<LeaveType>> GetEmployeesByLeaveType(int id)
         {
             throw new NotImplementedException();
         }
 
-        public bool Save()
-        {
-            return db.SaveChanges() != default;
-        }
+        public async Task<bool> Save()
+            => await db.SaveChangesAsync() != default;
 
-        public bool Update(LeaveType entity)
+        public async Task<bool> Update(LeaveType entity)
         {
             db.LeaveTypes.Update(entity);
-            return Save();
+            return await Save();
         }
     }
 }
