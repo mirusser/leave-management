@@ -15,69 +15,66 @@
 </p>
 
 <div class="row">
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-        <div class="card" style="width: 18rem;">
-            <div class="card-body text-center">
-                <h5 class="card-title">
+
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-info">
+                @Html.DisplayFor(model => model.TotalNumberOfRequests)
+            </span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">
                     @Html.DisplayNameFor(model => model.TotalNumberOfRequests)
-                </h5>
-
-                <div class="alert alert-info" role="alert">
-                    <h1 class="card-text">
-                        @Html.DisplayFor(model => model.TotalNumberOfRequests)
-                    </h1>
-                </div>
-
+                </span>
             </div>
         </div>
     </div>
 
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-        <div class="card" style="width: 18rem;">
-            <div class="card-body text-center">
-                <h5 class="card-title">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-warning">
+                @Html.DisplayFor(model => model.TotalNumberOfPendingRequests)
+            </span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">
                     @Html.DisplayNameFor(model => model.TotalNumberOfPendingRequests)
-                </h5>
-                <div class="alert alert-warning" role="alert">
-                    <h1 class="card-text">
-                        @Html.DisplayFor(model => model.TotalNumberOfPendingRequests)
-                    </h1>
-                </div>
+                </span>
             </div>
         </div>
     </div>
 
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-        <div class="card" style="width: 18rem;">
-            <div class="card-body text-center">
-                <h5 class="card-title">
+</div>
+
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-success">
+                @Html.DisplayFor(model => model.TotalNumberOfApprovedRequests)
+            </span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">
                     @Html.DisplayNameFor(model => model.TotalNumberOfApprovedRequests)
-                </h5>
-                <div class="alert alert-success" role="alert">
-                    <h1 class="card-text">
-                        @Html.DisplayFor(model => model.TotalNumberOfApprovedRequests)
-                    </h1>
-                </div>
+                </span>
             </div>
         </div>
     </div>
 
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-        <div class="card" style="width: 18rem;">
-            <div class="card-body text-center">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-danger">
+                @Html.DisplayFor(model => model.TotalNumberOfRejectedRequests)
+            </span>
 
-                <h5 class="card-title">
+            <div class="info-box-content">
+                <span class="info-box-text">
                     @Html.DisplayNameFor(model => model.TotalNumberOfRejectedRequests)
-                </h5>
-
-                <div class="alert alert-danger" role="alert">
-                    <h1 class="card-text">
-                        @Html.DisplayFor(model => model.TotalNumberOfRejectedRequests)
-                    </h1>
-                </div>
+                </span>
             </div>
         </div>
     </div>
+
 </div>
 
 <hr />
