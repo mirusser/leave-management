@@ -41,10 +41,16 @@ namespace leave_management.Repository
         }
 
         public async Task<IQueryable<LeaveAllocation>> GetLeaveAllocationsByEmployeeId(string employeeId)
-            => db.LeaveAllocations.Where(x => x.EmployeeId == employeeId && x.Period == DateTime.Now.Year).Include(x => x.LeaveType).Include(x => x.Employee);
+            => db.LeaveAllocations
+            .Where(x => x.EmployeeId == employeeId && x.Period == DateTime.Now.Year)
+            .Include(x => x.LeaveType)
+            .Include(x => x.Employee);
 
         public async Task<LeaveAllocation> GetLeaveAllocationByEmployeeIdAndLeaveTypeId(string employeeId, int leaveTypeId)
-            => await db.LeaveAllocations.Include(x => x.LeaveType).Include(x => x.Employee).FirstOrDefaultAsync(x => x.EmployeeId == employeeId && x.Period == DateTime.Now.Year && x.LeaveTypeId == leaveTypeId);
+            => await db.LeaveAllocations
+            .Include(x => x.LeaveType)
+            .Include(x => x.Employee)
+            .FirstOrDefaultAsync(x => x.EmployeeId == employeeId && x.Period == DateTime.Now.Year && x.LeaveTypeId == leaveTypeId);
 
         public async Task<LeaveAllocation> FindById(int id)
         {
@@ -63,6 +69,7 @@ namespace leave_management.Repository
         }
 
         public async Task<bool> CheackIfAllocationExistsForEmployee(int leaveTypeId, string employeeId)
-            => await db.LeaveAllocations.AnyAsync(x => x.EmployeeId == employeeId && x.LeaveTypeId == leaveTypeId && x.Period == DateTime.Now.Year);
+            => await db.LeaveAllocations
+            .AnyAsync(x => x.EmployeeId == employeeId && x.LeaveTypeId == leaveTypeId && x.Period == DateTime.Now.Year);
     }
 }

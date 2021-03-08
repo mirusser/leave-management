@@ -19,4 +19,13 @@ namespace leave_management.Data
 
         public DateTime DateCreated { get; set; }
     }
+
+    public static class LeaveTypeExtensions
+    {
+        public static string Fafaf(LeaveType value)
+        {
+            return "sdfasdf";
+        }
+    }
+
 }
