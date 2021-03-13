@@ -101,7 +101,7 @@ namespace leave_management.Controllers
                         x => x.EmployeeId == leaveRequest.RequestingEmployeeId && x.Period == DateTime.Now.Year && x.LeaveTypeId == leaveRequest.LeaveTypeId,
                         includes: new List<string>() { nameof(Employee), nameof(LeaveType) });
                     allocation.NumberOfDays -= (int)leaveRequest.EndDate.Subtract(leaveRequest.StarDate).TotalDays;
-                    
+
                     unitOfWork.LeaveAllocations.Update(allocation);
                     await unitOfWork.Save();
                 }
@@ -259,6 +259,12 @@ namespace leave_management.Controllers
             {
                 return View();
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            unitOfWork.Dispose();
+            base.Dispose(disposing);
         }
     }
 }

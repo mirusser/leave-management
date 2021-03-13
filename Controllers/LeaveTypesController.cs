@@ -179,5 +179,11 @@ namespace leave_management.Controllers
                 return RedirectToAction(nameof(Delete), new { id = id });
             }
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            unitOfWork.Dispose();
+            base.Dispose(disposing);
+        }
     }
 }
