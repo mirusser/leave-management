@@ -53,6 +53,15 @@
 
 <body class="hold-transition sidebar-mini" onbeforeunload="hideBodyDisplayLoader()">
 
+    <style>
+        html,
+        body {
+            width: 100%;
+            margin: 0;
+            height: 100%;
+        }
+    </style>
+
     <script>
         function hideBodyDisplayLoader() {
             $('#render-body').css('display', 'none');
@@ -196,18 +205,22 @@
                 </div>
             </div>
 
-            <div id="loading" class="row" style="display: none;">
-                <div class="col-md-12">
-                    <div class="d-flex justify-content-center align-content:center; align-items:center;">
-                        <div class="spinner-border" role="status" style="width: 15rem; height: 15rem;">
+            <div class="content">
+                <div class="container-fluid">
+
+                    <div id="loading" class="row" style="display: none;">
+                        <div class="col-md-12">
+                            <div class="d-flex justify-content-center align-content:center; align-items:center;" style="margin-top: 15%;">
+                                <div class="spinner-border" role="status" style="width: 15rem; height: 15rem;">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <div id="render-body" class="content">
-                <div class="container-fluid">
-                    @RenderBody()
+                    <div id="render-body">
+                        @RenderBody()
+                    </div>
+
                 </div>
             </div>
         </div>
