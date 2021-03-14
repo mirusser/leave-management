@@ -1,6 +1,18 @@
-﻿@{
+﻿@using leave_management.Extensions;
+@using leave_management.Components.Shared;
+@using leave_management.Models.Enums;
+
+@{
     ViewData["Title"] = "Home Page";
 }
+
+@await Component.InvokeAsync(MvcHelper.NameOfViewComponent<MessageViewComponent>(),
+    new
+    {
+        messageTitle = "Message title",
+        messageContent = "Message Demo", 
+        messageType = MessageType.warning
+    })
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
