@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using leave_management.Contracts;
 using leave_management.Data;
+using leave_management.Logic.Managers.Contracts;
 using leave_management.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -21,32 +22,25 @@ namespace leave_management.Controllers
         private readonly IMapper mapper;
         private readonly UserManager<Employee> userManager;
         private readonly IUnitOfWork unitOfWork;
+        private readonly ILeaveRequestManager leaveRequestManager;
 
         public LeaveRequestController(
             IMapper mapper,
             UserManager<Employee> userManager,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            ILeaveRequestManager leaveRequestManager)
         {
             this.mapper = mapper;
             this.userManager = userManager;
             this.unitOfWork = unitOfWork;
+            this.leaveRequestManager= leaveRequestManager;
         }
 
         [Authorize(Roles = "admin")]
         // GET: LeaveRequestController
         public async Task<IActionResult> Index()
         {
-            var leaveRequests = await unitOfWork.LeaveRequests.FindAll(includes: new List<string>() { nameof(LeaveRequest.RequestingEmployee), nameof(LeaveRequest.ApprovedBy), nameof(LeaveRequest.LeaveType) });
-            var leaveRequestsVM = mapper.Map<List<LeaveRequestVM>>(leaveRequests);
-
-            var adminLeaveRequestVM = new AdminLeaveRequestViewVM()
-            {
-                LeaveRequestVMs = leaveRequestsVM,
-                TotalNumberOfRequests = leaveRequestsVM.Count,
-                TotalNumberOfApprovedRequests = leaveRequestsVM.Count(x => x.Approved == true),
-                TotalNumberOfPendingRequests = leaveRequestsVM.Count(x => x.Approved == null),
-                TotalNumberOfRejectedRequests = leaveRequestsVM.Count(x => x.Approved == false)
-            };
+            var adminLeaveRequestVM = await leaveRequestManager.GetAllAdminLeaveRequestViewVM();
 
             return View(adminLeaveRequestVM);
         }

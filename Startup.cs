@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using leave_management.Logic.Managers;
+using leave_management.Logic.Managers.Contracts;
 
 namespace leave_management
 {
@@ -17,9 +19,9 @@ namespace leave_management
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
-
+        
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -34,6 +36,10 @@ namespace leave_management
             services.AddScoped<ILeaveAllocationRepository, LeaveAllocationRepository>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+            //managers
+            services.AddScoped<ILeaveRequestManager, LeaveRequestManager>();
+
 
             //add AutoMapper
             services.AddAutoMapper(typeof(Maps));
@@ -51,7 +57,7 @@ namespace leave_management
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(
-            IApplicationBuilder app, 
+            IApplicationBuilder app,
             IWebHostEnvironment env,
             UserManager<Employee> userManager,
             RoleManager<IdentityRole> roleManager)
