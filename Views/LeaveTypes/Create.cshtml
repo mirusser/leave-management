@@ -16,7 +16,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input id="name-input" asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -42,4 +42,16 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $('#name-input').on('focus click', function(e){
+            var foo = this.value; 
+            this.value = ''; 
+            if (foo) { this.value = foo; }
+        });
+
+        $(function(){
+            setTimeout(function () { $('#name-input').focus(); }, 100);
+        });
+    </script>
 }
